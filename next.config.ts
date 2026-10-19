@@ -1,0 +1,96 @@
+import type { NextConfig } from "next";
+
+const isProduction = process.env.NODE_ENV === "production";
+
+const nextConfig: NextConfig = {
+  compress: true,
+  turbopack: { root: __dirname },
+  experimental: { optimizeCss: false },
+  poweredByHeader: false,
+  devIndicators: false,
+  reactStrictMode: true,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 86400,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1440, 1920],
+    imageSizes: [256, 384, 640, 750],
+  },
+  async redirects() {
+    // Technology, AI and Learning now live on the separate UniqueToo Tech & Learning site.
+    return [
+      { source: "/manpower-agency-pune", destination: "/locations/pune", permanent: true },
+      { source: "/resources", destination: "/blog", permanent: true },
+      { source: "/resources/:path*", destination: "/blog", permanent: true },
+      { source: "/sitemap", destination: "/site-map", permanent: true },
+      { source: "/workforce/industrial-staffing", destination: "/services/staffing", permanent: true },
+      { source: "/workforce/recruitment", destination: "/services/recruitment", permanent: true },
+      { source: "/workforce/engineering-hiring", destination: "/services/engineering-hiring", permanent: true },
+      { source: "/workforce/security-services", destination: "/services/security", permanent: true },
+      { source: "/workforce/housekeeping", destination: "/services/housekeeping", permanent: true },
+      { source: "/workforce/payroll", destination: "/services/payroll-workforce-management", permanent: true },
+      { source: "/workforce", destination: "/services", permanent: true },
+      { source: "/workforce/:path*", destination: "/services/:path*", permanent: true },
+      { source: "/service", destination: "/services", permanent: true },
+      { source: "/service/:path*", destination: "/services/:path*", permanent: true },
+      { source: "/services/industrial-staffing", destination: "/services/staffing", permanent: true },
+      { source: "/services/recruitment-and-talent", destination: "/services/recruitment", permanent: true },
+      { source: "/recruitment", destination: "/services/recruitment", permanent: true },
+      { source: "/industrial-staffing", destination: "/services/staffing", permanent: true },
+      { source: "/engineering-hiring", destination: "/services/engineering-hiring", permanent: true },
+      { source: "/security-services", destination: "/services/security", permanent: true },
+      { source: "/housekeeping", destination: "/services/housekeeping", permanent: true },
+      { source: "/workforce-solutions", destination: "/services/workforce-solutions", permanent: true },
+      { source: "/careers/jobs", destination: "/jobs", permanent: true },
+      { source: "/careers/campus-hiring", destination: "/campus-hiring", permanent: true },
+      { source: "/campus-hiring-program", destination: "/campus-hiring", permanent: true },
+      { source: "/campus-placement", destination: "/campus-hiring", permanent: true },
+      { source: "/job-search", destination: "/jobs", permanent: true },
+      { source: "/job-listings", destination: "/jobs", permanent: true },
+      { source: "/careers", destination: "/join-us", permanent: true },
+      { source: "/careers-learning", destination: "/candidates", permanent: true },
+      { source: "/careers-and-learning", destination: "/candidates", permanent: true },
+      { source: "/career-hub", destination: "/candidates", permanent: true },
+      { source: "/register", destination: "/candidates#register", permanent: true },
+      { source: "/contact-us", destination: "/contact", permanent: true },
+      { source: "/about-us", destination: "/about", permanent: true },
+      { source: "/get-in-touch", destination: "/contact", permanent: true },
+      { source: "/industries-we-serve", destination: "/industries", permanent: true },
+      // Moved to the separate Tech & Learning site (temporary until its domain is live).
+      { source: "/technology", destination: "/", permanent: false },
+      { source: "/technologies", destination: "/", permanent: false },
+      { source: "/technologies/:path*", destination: "/", permanent: false },
+      { source: "/technology-solutions", destination: "/", permanent: false },
+      { source: "/services/technology", destination: "/services", permanent: false },
+      { source: "/services/ai-automation", destination: "/services", permanent: false },
+      { source: "/services/business-analytics", destination: "/services", permanent: false },
+      { source: "/software-development", destination: "/", permanent: false },
+      { source: "/ai", destination: "/", permanent: false },
+      { source: "/ai-automation", destination: "/", permanent: false },
+      { source: "/academy", destination: "/candidates", permanent: false },
+      { source: "/academy/:path*", destination: "/candidates", permanent: false },
+      { source: "/career-academy", destination: "/candidates", permanent: false },
+      { source: "/projects", destination: "/", permanent: false },
+      { source: "/projects/:path*", destination: "/", permanent: false },
+      { source: "/work", destination: "/services", permanent: false },
+      { source: "/our-work", destination: "/services", permanent: false },
+      { source: "/solutions", destination: "/services", permanent: false },
+    ];
+  },
+  async headers() {
+    return [
+      { source: "/(.*)", headers: [
+        { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ...(isProduction ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }] : []),
+        { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
+      ]},
+      { source: "/media/(.*)", headers: [{ key: "Cache-Control", value: "public,max-age=31536000,immutable" }] },
+      { source: "/media/(.*)", headers: [{ key: "Cache-Control", value: "public,max-age=31536000,immutable" }] },
+      { source: "/(favicon.ico|favicon.svg|apple-icon.png|icon.png|og-image.png|manifest.json)", headers: [{ key: "Cache-Control", value: "public,max-age=86400" }] },
+    ];
+  },
+};
+
+export default nextConfig;
